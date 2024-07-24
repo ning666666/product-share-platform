@@ -5,6 +5,8 @@ import java.util.Date;
 public class ShopTab {
     private Integer id;
 
+    private Integer businessId;
+
     private String shopCode;
 
     private String shopName;
@@ -31,6 +33,14 @@ public class ShopTab {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
     }
 
     public String getShopCode() {

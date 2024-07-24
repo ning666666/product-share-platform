@@ -37,7 +37,7 @@ public interface ShopTabMapper {
 
     int updateByPrimaryKey(ShopTab row);
 
-    List<AllShopTabResponse> getAllShopTabInfo(@Param("requestDTO") AllShopTabRequest allShopTabRequest);
+    List<AllShopTabResponse> getAllShopTabInfo(@Param("requestDTO") AllShopTabRequest allShopTabRequest, @Param("businessId") Integer businessId);
 
     List<GoodsToShopInfoResponse> getShopInfoByUser();
 }

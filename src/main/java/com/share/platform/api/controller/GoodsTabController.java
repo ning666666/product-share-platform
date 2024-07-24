@@ -8,6 +8,7 @@ import com.share.platform.api.service.GoodsTabService;
 import com.share.platform.api.utils.ResultVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,7 @@ public class GoodsTabController {
     /**
      * 获取所有商品信息
      */
+    @RequiresPermissions("admin:goodsTab:list")
     @ApiOperation(value = "获取所有商品信息")
     @PostMapping("/all")
     public ResultVo getAllGoodsTabInfo(@RequestBody AllGoodsTabRequest allGoodsTabRequest) {
@@ -34,6 +36,7 @@ public class GoodsTabController {
     /**
      * 添加商品
      */
+    @RequiresPermissions("admin:goodsTab:create")
     @ApiOperation(value = "添加商品")
     @PostMapping("/add")
     public ResultVo addGoodsTab(@RequestBody GoodsTabRequest goodsTabRequest) {
@@ -43,6 +46,7 @@ public class GoodsTabController {
     /**
      * 查询商品所属店铺
      */
+    @RequiresPermissions("admin:goodsTab:create")
     @ApiOperation(value = "查询商品所属店铺")
     @GetMapping("/getShopInfoByUser")
     public ResultVo getShopInfoByUser() {
@@ -52,6 +56,7 @@ public class GoodsTabController {
     /**
      * 商品图片上传（限制最多三张）
      */
+    @RequiresPermissions("admin:goodsTab:create")
     @ApiOperation(value = "商品图片上传")
     @PostMapping("/goods/upload")
     public ResultVo goodsImageUpload(@RequestParam("files") List<MultipartFile> files) {
@@ -61,6 +66,7 @@ public class GoodsTabController {
     /**
      * 资质图片上传
      */
+    @RequiresPermissions("admin:goodsTab:create")
     @ApiOperation(value = "资质图片上传")
     @PostMapping("/goods/quali/upload")
     public ResultVo goodsqualiImageUpload(@RequestParam("file") MultipartFile file) {
@@ -70,6 +76,7 @@ public class GoodsTabController {
     /**
      * 商品详细图片上传
      */
+    @RequiresPermissions("admin:goodsTab:create")
     @ApiOperation(value = "商品详细图片上传")
     @PostMapping("/goods/detail/upload")
     public ResultVo goodsDetailImageUpload(@RequestParam("files") List<MultipartFile> files) {
@@ -79,6 +86,7 @@ public class GoodsTabController {
     /**
      * 售后内容图片上传
      */
+    @RequiresPermissions("admin:goodsTab:create")
     @ApiOperation(value = "售后内容图片上传")
     @PostMapping("/goods/saleAfter/upload")
     public ResultVo goodsSaleAfterImageUpload(@RequestParam("files") List<MultipartFile> files) {
@@ -88,6 +96,7 @@ public class GoodsTabController {
     /**
      * 更新商品信息
      */
+    @RequiresPermissions("admin:goodsTab:update")
     @ApiOperation(value = "更新商品信息")
     @PutMapping("/update/{id}")
     public ResultVo updateGoodsTab(@PathVariable("id") int id, @RequestBody UpdateGoodsTabRequest updateGoodsTabRequest) {
@@ -97,6 +106,7 @@ public class GoodsTabController {
     /**
      * 删除商品信息
      */
+    @RequiresPermissions("admin:goodsTab:update")
     @ApiOperation(value = "删除商品信息")
     @DeleteMapping("/delete/{id}")
     public ResultVo deleteGoodsTab(@PathVariable("id") int id) {

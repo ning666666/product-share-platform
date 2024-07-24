@@ -165,6 +165,66 @@ public class ShopTabExample {
             return (Criteria) this;
         }
 
+        public Criteria andBusinessIdIsNull() {
+            addCriterion("business_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdIsNotNull() {
+            addCriterion("business_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdEqualTo(Integer value) {
+            addCriterion("business_id =", value, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdNotEqualTo(Integer value) {
+            addCriterion("business_id <>", value, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdGreaterThan(Integer value) {
+            addCriterion("business_id >", value, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("business_id >=", value, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdLessThan(Integer value) {
+            addCriterion("business_id <", value, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdLessThanOrEqualTo(Integer value) {
+            addCriterion("business_id <=", value, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdIn(List<Integer> values) {
+            addCriterion("business_id in", values, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdNotIn(List<Integer> values) {
+            addCriterion("business_id not in", values, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdBetween(Integer value1, Integer value2) {
+            addCriterion("business_id between", value1, value2, "businessId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBusinessIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("business_id not between", value1, value2, "businessId");
+            return (Criteria) this;
+        }
+
         public Criteria andShopCodeIsNull() {
             addCriterion("shop_code is null");
             return (Criteria) this;

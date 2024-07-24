@@ -12,6 +12,9 @@ public class AllGoodsTabResponse {
 
     private Integer id;
 
+    @ApiModelProperty(notes = "店铺id")
+    private String parentId;
+
     @ApiModelProperty(notes = "店铺名称")
     private String shopName;
 

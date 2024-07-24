@@ -6,8 +6,8 @@ import com.share.platform.api.constant.ResultCode;
 import com.share.platform.api.model.PspAdmin;
 import com.share.platform.api.service.serviceImpl.PermissionService;
 import com.share.platform.api.service.serviceImpl.RoleService;
-import com.share.platform.api.utils.*;
 import com.share.platform.api.utils.Base64;
+import com.share.platform.api.utils.*;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -21,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +77,7 @@ public class AdminAuthController {
 		}
 
 		logger.info("【请求结束】系统管理->用户登录,响应结果:{}", JSONObject.toJSONString(currentUser.getSession().getId()));
-		return ResultVo.buildData(ResultCode.SUCCESS, currentUser.getSession().getId());
+		return ResultVo.buildData(ResultCode.LOGIN_SUCCESS, currentUser.getSession().getId());
 	}
 
 	/*
@@ -91,7 +90,7 @@ public class AdminAuthController {
 		currentUser.logout();
 
 		logger.info("【请求结束】系统管理->用户注销,响应结果:{}", JSONObject.toJSONString(currentUser.getSession().getId()));
-		return ResultVo.buildCode(ResultCode.SUCCESS);
+		return ResultVo.buildCode(ResultCode.LOGOUT_SUCCESS);
 	}
 
 	@RequiresAuthentication
@@ -106,12 +105,6 @@ public class AdminAuthController {
 
 		// 转为Integer数组
 		Integer[] roleIds = admin.getRoleIds();
-		//		String[] strArray = roleId.split(",");
-		//		List<Integer> intList = new ArrayList<>();
-		//		for (String s : strArray) {
-		//			intList.add(Integer.parseInt(s));
-		//		}
-		//		Integer[] roleIds = intList.toArray(new Integer[0]);
 
 		Set<String> roles = roleService.queryByIds(roleIds);
 		Set<String> permissions = permissionService.queryByRoleIds(roleIds);
@@ -164,6 +157,7 @@ public class AdminAuthController {
 		logger.info("验证码:{}", verifyCode);
         // 唯一标识
         String uuid = UUID.randomUUID().toString();
+		logger.info("uuid:{}", uuid);
         boolean successful = CaptchaCodeManager.addToCache(uuid, verifyCode,10);//存储内存
         if (!successful) {
 			logger.error("请求验证码出错:{}", ResultCode.AUTH_CAPTCHA_FREQUENCY.getMsg());

@@ -13,12 +13,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -47,12 +45,12 @@ public class AdminAuthorizingRealm extends AuthorizingRealm {
 		PspAdmin admin = (PspAdmin) getAvailablePrincipal(principals);
 		// 转为Integer数组
 		Integer[] roleIds = admin.getRoleIds();
-//		String[] strArray = roleId.split(",");
-//		List<Integer> intList = new ArrayList<>();
-//		for (String s : strArray) {
-//			intList.add(Integer.parseInt(s));
-//		}
-//		Integer[] roleIds = intList.toArray(new Integer[0]);
+		//		String[] strArray = roleId.split(",");
+		//		List<Integer> intList = new ArrayList<>();
+		//		for (String s : strArray) {
+		//			intList.add(Integer.parseInt(s));
+		//		}
+		//		Integer[] roleIds = intList.toArray(new Integer[0]);
 
 		Set<String> roles = roleService.queryByIds(roleIds);
 		Set<String> permissions = permissionService.queryByRoleIds(roleIds);

@@ -10,6 +10,8 @@ import com.share.platform.api.mapper.GoodsTabMapper;
 import com.share.platform.api.mapper.ShopTabMapper;
 import com.share.platform.api.model.GoodsTab;
 import com.share.platform.api.model.GoodsTabExample;
+import com.share.platform.api.model.ShopTab;
+import com.share.platform.api.model.ShopTabExample;
 import com.share.platform.api.service.GoodsTabService;
 import com.share.platform.api.utils.AuthSupport;
 import com.share.platform.api.utils.ResultVo;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Slf4j
@@ -48,9 +51,15 @@ public class GoodsTabServiceImpl implements GoodsTabService {
 
     @Override
     public List<AllGoodsTabResponse> getAllGoodsTabInfo(AllGoodsTabRequest allGoodsTabRequest) {
+        List<AllGoodsTabResponse> allGoodsTabInfo = goodsTabMapper.getAllGoodsTabInfo(allGoodsTabRequest);
         Integer businessId = AuthSupport.adminId();
-
-        return goodsTabMapper.getAllGoodsTabInfo(allGoodsTabRequest);
+        // 获取当前商家所属店铺
+        ShopTabExample shopTabExample = new ShopTabExample();
+        shopTabExample.createCriteria().andBusinessIdEqualTo(businessId);
+        List<ShopTab> shopTabs = shopTabMapper.selectByExample(shopTabExample);
+        Set<Integer> shopTabIdSet = shopTabs.stream().map(ShopTab::getId).collect(Collectors.toSet());
+        allGoodsTabInfo = allGoodsTabInfo.stream().filter(e -> !shopTabIdSet.contains(e.getParentId())).collect(Collectors.toList());
+        return allGoodsTabInfo;
     }
 
     @Override
@@ -70,8 +79,8 @@ public class GoodsTabServiceImpl implements GoodsTabService {
         goodsTab.setAfterSales(goodsTab.getAfterSales());
         goodsTab.setCreateTime(new Date());
         goodsTab.setUpdateTime(new Date());
-        //goodsTab.setCreatedBy();
-        //goodsTab.setUpdateBy();
+        goodsTab.setCreatedBy(AuthSupport.userName());
+        goodsTab.setUpdateBy(AuthSupport.userName());
         goodsTabMapper.insertSelective(goodsTab);
 
         log.info("goods tab add success");
@@ -80,7 +89,16 @@ public class GoodsTabServiceImpl implements GoodsTabService {
 
     @Override
     public List<GoodsToShopInfoResponse> getShopInfoByUser() {
-        return shopTabMapper.getShopInfoByUser();
+        // 所有店铺
+        List<GoodsToShopInfoResponse> shopInfoByUserAll = shopTabMapper.getShopInfoByUser();
+        // 获取当前商家所属店铺
+        Integer businessId = AuthSupport.adminId();
+        ShopTabExample shopTabExample = new ShopTabExample();
+        shopTabExample.createCriteria().andBusinessIdEqualTo(businessId);
+        List<ShopTab> shopTabs = shopTabMapper.selectByExample(shopTabExample);
+        Set<Integer> shopTabIdSet = shopTabs.stream().map(ShopTab::getId).collect(Collectors.toSet());
+        shopInfoByUserAll = shopInfoByUserAll.stream().filter(e -> !shopTabIdSet.contains(e.getId())).collect(Collectors.toList());
+        return shopInfoByUserAll;
     }
 
     @Override
@@ -239,7 +257,7 @@ public class GoodsTabServiceImpl implements GoodsTabService {
         GoodsTab goodsTab = new GoodsTab();
         BeanUtils.copyProperties(updateGoodsTabRequest, goodsTab);
         goodsTab.setUpdateTime(new Date());
-        //shopTab.setUpdateBy();
+        goodsTab.setUpdateBy(AuthSupport.userName());
 
         int result = goodsTabMapper.updateByExampleSelective(goodsTab, goodsTabExample);
         if (result == 1) {

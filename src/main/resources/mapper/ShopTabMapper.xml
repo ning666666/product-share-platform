@@ -3,6 +3,7 @@
 <mapper namespace="com.share.platform.api.mapper.ShopTabMapper">
   <resultMap id="BaseResultMap" type="com.share.platform.api.model.ShopTab">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="business_id" jdbcType="INTEGER" property="businessId" />
     <result column="shop_code" jdbcType="VARCHAR" property="shopCode" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
     <result column="shop_add" jdbcType="VARCHAR" property="shopAdd" />
@@ -14,7 +15,6 @@
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
   </resultMap>
-
   <resultMap id="AllShopInfoResultMap" type="com.share.platform.api.dto.reponse.AllShopTabResponse">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="shop_code" jdbcType="VARCHAR" property="shopCode" />
@@ -82,7 +82,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, shop_code, shop_name, shop_add, shop_contacts, shop_phone, shop_qualificate, 
+    id, business_id, shop_code, shop_name, shop_add, shop_contacts, shop_phone, shop_qualificate, 
     create_time, update_time, created_by, update_by
   </sql>
   <select id="selectByExample" parameterType="com.share.platform.api.model.ShopTabExample" resultMap="BaseResultMap">
@@ -119,14 +119,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into shop_tab (shop_code, shop_name, shop_add, 
-      shop_contacts, shop_phone, shop_qualificate, 
-      create_time, update_time, created_by, 
-      update_by)
-    values (#{shopCode,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{shopAdd,jdbcType=VARCHAR}, 
-      #{shopContacts,jdbcType=VARCHAR}, #{shopPhone,jdbcType=VARCHAR}, #{shopQualificate,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
-      #{updateBy,jdbcType=VARCHAR})
+    insert into shop_tab (business_id, shop_code, shop_name, 
+      shop_add, shop_contacts, shop_phone, 
+      shop_qualificate, create_time, update_time, 
+      created_by, update_by)
+    values (#{businessId,jdbcType=INTEGER}, #{shopCode,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, 
+      #{shopAdd,jdbcType=VARCHAR}, #{shopContacts,jdbcType=VARCHAR}, #{shopPhone,jdbcType=VARCHAR}, 
+      #{shopQualificate,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{updateBy,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.share.platform.api.model.ShopTab">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -134,6 +134,9 @@
     </selectKey>
     insert into shop_tab
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="businessId != null">
+        business_id,
+      </if>
       <if test="shopCode != null">
         shop_code,
       </if>
@@ -166,6 +169,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="businessId != null">
+        #{businessId,jdbcType=INTEGER},
+      </if>
       <if test="shopCode != null">
         #{shopCode,jdbcType=VARCHAR},
       </if>
@@ -210,6 +216,9 @@
       <if test="row.id != null">
         id = #{row.id,jdbcType=INTEGER},
       </if>
+      <if test="row.businessId != null">
+        business_id = #{row.businessId,jdbcType=INTEGER},
+      </if>
       <if test="row.shopCode != null">
         shop_code = #{row.shopCode,jdbcType=VARCHAR},
       </if>
@@ -248,6 +257,7 @@
   <update id="updateByExample" parameterType="map">
     update shop_tab
     set id = #{row.id,jdbcType=INTEGER},
+      business_id = #{row.businessId,jdbcType=INTEGER},
       shop_code = #{row.shopCode,jdbcType=VARCHAR},
       shop_name = #{row.shopName,jdbcType=VARCHAR},
       shop_add = #{row.shopAdd,jdbcType=VARCHAR},
@@ -265,6 +275,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.share.platform.api.model.ShopTab">
     update shop_tab
     <set>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=INTEGER},
+      </if>
       <if test="shopCode != null">
         shop_code = #{shopCode,jdbcType=VARCHAR},
       </if>
@@ -300,7 +313,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.share.platform.api.model.ShopTab">
     update shop_tab
-    set shop_code = #{shopCode,jdbcType=VARCHAR},
+    set business_id = #{businessId,jdbcType=INTEGER},
+      shop_code = #{shopCode,jdbcType=VARCHAR},
       shop_name = #{shopName,jdbcType=VARCHAR},
       shop_add = #{shopAdd,jdbcType=VARCHAR},
       shop_contacts = #{shopContacts,jdbcType=VARCHAR},
@@ -329,14 +343,13 @@
   <select id="getAllShopTabInfo" parameterType="com.share.platform.api.dto.request.AllShopTabRequest" resultMap="AllShopInfoResultMap">
     SELECT *
     FROM shop_tab
-    <where>
-      <if test="requestDTO.shopName != null and requestDTO.shopName != ''">
-        AND shop_name LIKE CONCAT('%', #{requestDTO.shopName}, '%')
-      </if>
-      <if test="requestDTO.shopPhone != null and requestDTO.shopPhone != ''">
-        AND shop_phone LIKE CONCAT('%', #{requestDTO.shopPhone}, '%')
-      </if>
-    </where>
+    WHERE business_id = #{businessId}
+    <if test="requestDTO.shopName != null and requestDTO.shopName != ''">
+      AND shop_name LIKE CONCAT('%', #{requestDTO.shopName}, '%')
+    </if>
+    <if test="requestDTO.shopPhone != null and requestDTO.shopPhone != ''">
+      AND shop_phone LIKE CONCAT('%', #{requestDTO.shopPhone}, '%')
+    </if>
   </select>
   <select id="getShopInfoByUser" resultType="com.share.platform.api.dto.reponse.GoodsToShopInfoResponse">
     SELECT id, shop_name AS shopName

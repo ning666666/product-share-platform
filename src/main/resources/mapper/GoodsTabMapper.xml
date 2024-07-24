@@ -26,6 +26,7 @@
 
   <resultMap id="AllGoodsResultMap" type="com.share.platform.api.dto.reponse.AllGoodsTabResponse">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
     <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
     <result column="goods_lab" jdbcType="VARCHAR" property="goodsLab" />

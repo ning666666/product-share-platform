@@ -18,6 +18,8 @@ public enum ResultCode {
 
 	LOGIN_SUCCESS(200,"登录成功"),
 
+	LOGOUT_SUCCESS(200,"登出成功"),
+
 	LOAD_ERROR(400,"登录错误"),
 
 	/**
@@ -71,15 +73,9 @@ public enum ResultCode {
 
 	AUTH_USER_CAN_ACCESS(200, "认证用户可访问"),
 
-	LOGOUT_SUCCESS(407, "登出成功"),
-
-	LOGOUT_FAIL(408, "登出失败"),
-
 	ERROR_USERNAME(409, "用户名错误"),
 
 	ERROR_PASSWORD(410, "密码错误"),
-
-	ERROR_PASSWORD_USERNAME(410, "用户名或密码错误"),
 
 	USER_LOCKED(411, "用户为锁定状态"),
 
@@ -90,10 +86,6 @@ public enum ResultCode {
 	FAILED_ROLE_ALREADY_EXIST(487, "该角色已存在"),
 
 	FAILED_RESOURCE_ALREADY_EXIST(488, "该资源已存在"),
-
-	FAILED_ORGANIZATION_ALREADY_EXIST(489, "该组织已存在"),
-
-	FAILED_GROUP_ALREADY_EXIST(491, "该用户组已存在"),
 
 	FAILED_USER_NOT_EXIST(492, "该用户不存在"),
 

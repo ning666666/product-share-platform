@@ -9,6 +9,7 @@ import com.share.platform.api.mapper.ShopTabMapper;
 import com.share.platform.api.model.ShopTab;
 import com.share.platform.api.model.ShopTabExample;
 import com.share.platform.api.service.ShopTabService;
+import com.share.platform.api.utils.AuthSupport;
 import com.share.platform.api.utils.ResultVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -42,7 +43,9 @@ public class ShopTabServiceImpl implements ShopTabService {
 
     @Override
     public List<AllShopTabResponse> getAllShopTabInfo(AllShopTabRequest allShopTabRequest) {
-        return shopTabMapper.getAllShopTabInfo(allShopTabRequest);
+        // 获取当前管理员id作为商家id
+        Integer businessId = AuthSupport.adminId();
+        return shopTabMapper.getAllShopTabInfo(allShopTabRequest, businessId);
     }
 
     @Override
@@ -57,8 +60,8 @@ public class ShopTabServiceImpl implements ShopTabService {
         shopTab.setShopQualificate(shopTabRequest.getImageAddress());
         shopTab.setCreateTime(new Date());
         shopTab.setUpdateTime(new Date());
-        //shopTab.setCreatedBy();
-        //shopTab.setUpdateBy();
+        shopTab.setCreatedBy(AuthSupport.userName());
+        shopTab.setUpdateBy(AuthSupport.userName());
         shopTabMapper.insertSelective(shopTab);
 
         log.info("shop tab add success");
@@ -147,7 +150,7 @@ public class ShopTabServiceImpl implements ShopTabService {
         ShopTab shopTab = new ShopTab();
         BeanUtils.copyProperties(updateShopTabRequest, shopTab);
         shopTab.setUpdateTime(new Date());
-        //shopTab.setUpdateBy();
+        shopTab.setUpdateBy(AuthSupport.userName());
 
         int result = shopTabMapper.updateByExampleSelective(shopTab, shopTabExample);
         if (result == 1) {
