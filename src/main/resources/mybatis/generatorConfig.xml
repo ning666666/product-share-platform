@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+  
+  <classPathEntry location="D:\maven\.m2\repository\mysql\mysql-connector-java\8.0.26\mysql-connector-java-8.0.26.jar"/>
+  
+  <context id="product-share-platform" targetRuntime="MyBatis3">
+  	<!-- 分页插件 -->
+  	<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+  	
+  	<!-- 去掉注释 -->
+  	<commentGenerator>
+    	<property name="suppressAllComments" value="true"/>
+    </commentGenerator>
+    
+    <jdbcConnection connectionURL="jdbc:mysql://localhost:3306/shangcheng?serverTimezone=Asia/Shanghai"
+    				driverClass="com.mysql.cj.jdbc.Driver"
+    				password="root"
+    				userId="root">
+    				
+    	<!-- 部分mysql版本无法获取metadata -->
+	    <property name="useInformationSchema" value="true"/>
+	    <property name="remarks" value="true"/>
+	    <property name="nullCatalogMeansCurrent" value="true"/>
+
+    </jdbcConnection>
+    
+    <javaModelGenerator targetPackage="com.share.platform.api.model"
+    					targetProject="product-share-platform/src/main/java">
+    					
+    	<property name="enableSubPackages" value="false" />
+		<property name="trimStrings" value="true" />
+		
+    </javaModelGenerator>					
+    
+    <sqlMapGenerator targetPackage="mapper" 
+    				 targetProject="product-share-platform/src/main/resources">
+    
+    	<property name="enableSubPackages" value="false" />
+    	
+    </sqlMapGenerator>
+
+    <javaClientGenerator targetPackage="com.share.platform.api.mapper"
+						 targetProject="product-share-platform/src/main/java" type="XMLMAPPER">
+    
+    	<property name="enableSubPackages" value="false" />
+
+    </javaClientGenerator>
+
+    <table tableName="goods_tab">
+    	<generatedKey column="id" sqlStatement="mysql" identity="true"/>
+    </table>
+
+	<table tableName="shop_tab">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_admin">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_permission">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_role">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_user">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+  </context>
+</generatorConfiguration>
