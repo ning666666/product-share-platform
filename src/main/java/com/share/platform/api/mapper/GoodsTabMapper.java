@@ -1,5 +1,6 @@
 package com.share.platform.api.mapper;
 
+import com.github.pagehelper.Page;
 import com.share.platform.api.dto.reponse.AllGoodsTabResponse;
 import com.share.platform.api.dto.request.AllGoodsTabRequest;
 import com.share.platform.api.model.GoodsTab;
@@ -36,5 +37,5 @@ public interface GoodsTabMapper {
 
     int updateByPrimaryKey(GoodsTab row);
 
-    List<AllGoodsTabResponse> getAllGoodsTabInfo(@Param("requestDTO") AllGoodsTabRequest allGoodsTabRequest);
+    Page<AllGoodsTabResponse> getAllGoodsTabInfo(@Param("requestDTO") AllGoodsTabRequest allGoodsTabRequest);
 }

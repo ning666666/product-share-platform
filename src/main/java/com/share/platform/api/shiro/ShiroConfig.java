@@ -62,6 +62,7 @@ public class ShiroConfig {
 		//  静态路径放开
 		filterChainDefinitionMap.put("/public/**", "anon");
 		filterChainDefinitionMap.put("/static/**", "anon");
+		filterChainDefinitionMap.put("/image/**", "anon");
 
 		//  调试工具全部放开
 		filterChainDefinitionMap.put("/swagger-ui.html", "anon");

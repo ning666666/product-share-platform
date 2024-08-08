@@ -1,5 +1,6 @@
 package com.share.platform.api.service;
 
+import com.share.platform.api.dto.reponse.AllGoodsTabPageResponse;
 import com.share.platform.api.dto.reponse.AllGoodsTabResponse;
 import com.share.platform.api.dto.reponse.GoodsToShopInfoResponse;
 import com.share.platform.api.dto.request.AllGoodsTabRequest;
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public interface GoodsTabService {
 
-    List<AllGoodsTabResponse> getAllGoodsTabInfo(AllGoodsTabRequest allGoodsTabRequest);
+    AllGoodsTabPageResponse getAllGoodsTabInfo(AllGoodsTabRequest allGoodsTabRequest);
 
     ResultVo addGoodsTab(GoodsTabRequest goodsTabRequest);
 

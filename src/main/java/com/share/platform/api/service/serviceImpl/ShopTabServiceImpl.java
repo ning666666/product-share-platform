@@ -1,6 +1,9 @@
 package com.share.platform.api.service.serviceImpl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.share.platform.api.constant.ResultCode;
+import com.share.platform.api.dto.reponse.AllShopTabPageResponse;
 import com.share.platform.api.dto.reponse.AllShopTabResponse;
 import com.share.platform.api.dto.request.AllShopTabRequest;
 import com.share.platform.api.dto.request.ShopTabRequest;
@@ -42,10 +45,15 @@ public class ShopTabServiceImpl implements ShopTabService {
     private static final long MAX_FILE_SIZE = 1048576;
 
     @Override
-    public List<AllShopTabResponse> getAllShopTabInfo(AllShopTabRequest allShopTabRequest) {
+    public AllShopTabPageResponse getAllShopTabInfo(AllShopTabRequest allShopTabRequest) {
+        AllShopTabPageResponse allShopTabPage = new AllShopTabPageResponse();
         // 获取当前管理员id作为商家id
         Integer businessId = AuthSupport.adminId();
-        return shopTabMapper.getAllShopTabInfo(allShopTabRequest, businessId);
+        PageHelper.startPage(allShopTabRequest.getPage(), allShopTabRequest.getPageSize());
+        Page<AllShopTabResponse> allShopTabInfos = shopTabMapper.getAllShopTabInfo(allShopTabRequest, businessId);
+        allShopTabPage.setAllShopTabList(allShopTabInfos.getResult());
+        allShopTabPage.setTotalRecords(allShopTabInfos.getTotal());
+        return allShopTabPage;
     }
 
     @Override
@@ -53,6 +61,7 @@ public class ShopTabServiceImpl implements ShopTabService {
         // 保存店铺信息
         ShopTab shopTab = new ShopTab();
         //shopTab.setShopCode(ProductAndTabCodeGenerator.generateProductCode());
+        shopTab.setBusinessId(AuthSupport.currentUser().getId());
         shopTab.setShopName(shopTabRequest.getShopName());
         shopTab.setShopAdd(shopTabRequest.getShopAdd());
         shopTab.setShopContacts(shopTabRequest.getShopContacts());

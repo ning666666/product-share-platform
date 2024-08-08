@@ -3,6 +3,7 @@ package com.share.platform.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.share.platform.api.captcha.CaptchaCodeManager;
 import com.share.platform.api.constant.ResultCode;
+import com.share.platform.api.dto.request.UserLoginInfoRequest;
 import com.share.platform.api.model.PspAdmin;
 import com.share.platform.api.service.serviceImpl.PermissionService;
 import com.share.platform.api.service.serviceImpl.RoleService;
@@ -40,31 +41,31 @@ public class AdminAuthController {
 	private PermissionService permissionService;
 
 	@PostMapping("/login")
-	public Object login(@RequestBody String body) {
-		logger.info("【请求开始】系统管理->用户登录,请求参数:body:{}", body);
+	public Object login(@RequestBody UserLoginInfoRequest userLoginInfo) {
+		logger.info("【请求开始】系统管理->用户登录,请求参数:body:{}", userLoginInfo);
 
-		String username = JacksonUtil.parseString(body, "username");
-		String password = JacksonUtil.parseString(body, "password");
-		String code = JacksonUtil.parseString(body, "code");
-		String uuid = JacksonUtil.parseString(body, "uuid");
+		//String username = JacksonUtil.parseString(body, "username");
+		//String password = JacksonUtil.parseString(body, "password");
+		//String code = JacksonUtil.parseString(body, "code");
+		//String uuid = JacksonUtil.parseString(body, "uuid");
 
-		if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(code) || StringUtils.isEmpty(uuid)) {
+		if (StringUtils.isEmpty(userLoginInfo.getUsername()) || StringUtils.isEmpty(userLoginInfo.getPassword())) {
 			return ResultVo.buildCode(ResultCode.PARAMETER_ERROR);
 		}
 
 		//验证码校验
-		String cachedCaptcha = CaptchaCodeManager.getCachedCaptcha(uuid);
-		if (cachedCaptcha == null) {
-			logger.error("系统管理->用户登录  错误:{},", ResultCode.AUTH_CAPTCHA_EXPIRED.getMsg());
-			return ResultVo.buildCode(ResultCode.AUTH_CAPTCHA_EXPIRED);
-		}
-		if (!code.equalsIgnoreCase(cachedCaptcha)) {
-			logger.error("系统管理->用户登录  错误:{},输入验证码：{},后台验证码：{}", ResultCode.AUTH_CAPTCHA_ERROR.getMsg(),code,cachedCaptcha);
-			return ResultVo.buildCode(ResultCode.AUTH_CAPTCHA_ERROR);
-		}
+		//String cachedCaptcha = CaptchaCodeManager.getCachedCaptcha(uuid);
+		//if (cachedCaptcha == null) {
+		//	logger.error("系统管理->用户登录  错误:{},", ResultCode.AUTH_CAPTCHA_EXPIRED.getMsg());
+		//	return ResultVo.buildCode(ResultCode.AUTH_CAPTCHA_EXPIRED);
+		//}
+		//if (!code.equalsIgnoreCase(cachedCaptcha)) {
+		//	logger.error("系统管理->用户登录  错误:{},输入验证码：{},后台验证码：{}", ResultCode.AUTH_CAPTCHA_ERROR.getMsg(),code,cachedCaptcha);
+		//	return ResultVo.buildCode(ResultCode.AUTH_CAPTCHA_ERROR);
+		//}
 		Subject currentUser = SecurityUtils.getSubject();
 		try {
-			currentUser.login(new UsernamePasswordToken(username, password));
+			currentUser.login(new UsernamePasswordToken(userLoginInfo.getUsername(), userLoginInfo.getPassword()));
 		} catch (UnknownAccountException uae) {
 			logger.error("系统管理->用户登录  错误:{}", ResultCode.ADMIN_INVALID_ACCOUNT_OR_PASSWORD.getMsg());
 			return ResultVo.buildCode(ResultCode.ADMIN_INVALID_ACCOUNT_OR_PASSWORD);
@@ -123,7 +124,7 @@ public class AdminAuthController {
 	private Collection<String> toAPI(Set<String> permissions) {
 		if (systemPermissionsMap == null) {
 			systemPermissionsMap = new HashMap<>();
-			final String basicPackage = "com.qiguliuxing.dts.admin";
+			final String basicPackage = "com.share.platform.api";
 			List<Permission> systemPermissions = PermissionUtil.listPermission(context, basicPackage);
 			for (Permission permission : systemPermissions) {
 				String perm = permission.getRequiresPermissions().value()[0];

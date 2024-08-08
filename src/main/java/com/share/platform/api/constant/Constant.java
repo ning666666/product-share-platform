@@ -56,4 +56,22 @@ public class Constant {
      */
     private Constant() {
     }
+
+    /**
+     * http请求header中的key
+     */
+    public static class HEADER_KEY {
+        /**
+         * 前端请求的token
+         */
+        public static final String TOKEN = "token";
+        /**
+         * token过期时间
+         */
+        public static final String TOKEN_EXPIRE = "token-expire";
+        /**
+         * 刷新的token
+         */
+        public static final String REFRESH_TOKEN = "refresh-token";
+    }
 }

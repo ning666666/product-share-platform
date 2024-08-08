@@ -1,6 +1,9 @@
 package com.share.platform.api.service.serviceImpl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.share.platform.api.constant.ResultCode;
+import com.share.platform.api.dto.reponse.AllGoodsTabPageResponse;
 import com.share.platform.api.dto.reponse.AllGoodsTabResponse;
 import com.share.platform.api.dto.reponse.GoodsToShopInfoResponse;
 import com.share.platform.api.dto.request.AllGoodsTabRequest;
@@ -50,16 +53,21 @@ public class GoodsTabServiceImpl implements GoodsTabService {
 
 
     @Override
-    public List<AllGoodsTabResponse> getAllGoodsTabInfo(AllGoodsTabRequest allGoodsTabRequest) {
-        List<AllGoodsTabResponse> allGoodsTabInfo = goodsTabMapper.getAllGoodsTabInfo(allGoodsTabRequest);
+    public AllGoodsTabPageResponse getAllGoodsTabInfo(AllGoodsTabRequest allGoodsTabRequest) {
+        AllGoodsTabPageResponse allGoodsTabPageResponse = new AllGoodsTabPageResponse();
+        PageHelper.startPage(allGoodsTabRequest.getPage(), allGoodsTabRequest.getPageSize());
+        Page<AllGoodsTabResponse> allGoodsTabInfo = goodsTabMapper.getAllGoodsTabInfo(allGoodsTabRequest);
+        List<AllGoodsTabResponse> allGoodsTabInfoResult = allGoodsTabInfo.getResult();
         Integer businessId = AuthSupport.adminId();
         // 获取当前商家所属店铺
         ShopTabExample shopTabExample = new ShopTabExample();
         shopTabExample.createCriteria().andBusinessIdEqualTo(businessId);
         List<ShopTab> shopTabs = shopTabMapper.selectByExample(shopTabExample);
         Set<Integer> shopTabIdSet = shopTabs.stream().map(ShopTab::getId).collect(Collectors.toSet());
-        allGoodsTabInfo = allGoodsTabInfo.stream().filter(e -> !shopTabIdSet.contains(e.getParentId())).collect(Collectors.toList());
-        return allGoodsTabInfo;
+        allGoodsTabInfoResult = allGoodsTabInfoResult.stream().filter(e -> !shopTabIdSet.contains(e.getParentId())).collect(Collectors.toList());
+        allGoodsTabPageResponse.setAllGoodsTabList(allGoodsTabInfoResult);
+        allGoodsTabPageResponse.setTotalRecords((long) allGoodsTabInfoResult.size());
+        return allGoodsTabPageResponse;
     }
 
     @Override

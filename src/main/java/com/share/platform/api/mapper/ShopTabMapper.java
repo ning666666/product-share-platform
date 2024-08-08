@@ -1,5 +1,6 @@
 package com.share.platform.api.mapper;
 
+import com.github.pagehelper.Page;
 import com.share.platform.api.dto.reponse.AllShopTabResponse;
 import com.share.platform.api.dto.reponse.GoodsToShopInfoResponse;
 import com.share.platform.api.dto.request.AllShopTabRequest;
@@ -37,7 +38,7 @@ public interface ShopTabMapper {
 
     int updateByPrimaryKey(ShopTab row);
 
-    List<AllShopTabResponse> getAllShopTabInfo(@Param("requestDTO") AllShopTabRequest allShopTabRequest, @Param("businessId") Integer businessId);
+    Page<AllShopTabResponse> getAllShopTabInfo(@Param("requestDTO") AllShopTabRequest allShopTabRequest, @Param("businessId") Integer businessId);
 
     List<GoodsToShopInfoResponse> getShopInfoByUser();
 }

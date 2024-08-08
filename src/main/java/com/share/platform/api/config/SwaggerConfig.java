@@ -1,5 +1,6 @@
 package com.share.platform.api.config;
 
+import com.share.platform.api.constant.Constant;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,9 @@ import springfox.documentation.annotations.ApiIgnore;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.spring.web.json.Json;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -39,10 +40,7 @@ import springfox.documentation.spring.web.json.JsonSerializer;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 @EnableSwagger2
@@ -57,7 +55,9 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .securitySchemes(Collections.singletonList(apiKey()))
+                .securityContexts(Collections.singletonList(securityContext()));
     }
 
     private ApiInfo apiInfo() {
@@ -68,6 +68,25 @@ public class SwaggerConfig {
                 .contact(new Contact("ning.jl", "www.share.com", "ning19107409227@163.com"))
                 .build();
     }
+
+    private ApiKey apiKey() {
+        return new ApiKey(Constant.HEADER_KEY.TOKEN, Constant.HEADER_KEY.TOKEN, "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("/.*"))
+                .build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Collections.singletonList(new SecurityReference(Constant.HEADER_KEY.TOKEN, authorizationScopes));
+    }
+
     @Bean
     public SimpleUrlHandlerMapping swaggerUrlHandlerMapping(ServletContext servletContext,
                                                             @Value("${swagger.mapping.order:10}") int order) throws Exception {

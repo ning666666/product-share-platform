@@ -1,5 +1,7 @@
 package com.share.platform.api.service;
 
+import com.github.pagehelper.Page;
+import com.share.platform.api.dto.reponse.AllShopTabPageResponse;
 import com.share.platform.api.dto.reponse.AllShopTabResponse;
 import com.share.platform.api.dto.request.AllShopTabRequest;
 import com.share.platform.api.dto.request.ShopTabRequest;
@@ -13,7 +15,7 @@ import java.util.List;
 @Service
 public interface ShopTabService {
 
-    List<AllShopTabResponse> getAllShopTabInfo(AllShopTabRequest allShopTabRequest);
+    AllShopTabPageResponse getAllShopTabInfo(AllShopTabRequest allShopTabRequest);
 
     ResultVo addShopTab( ShopTabRequest shopTabRequest);
 
