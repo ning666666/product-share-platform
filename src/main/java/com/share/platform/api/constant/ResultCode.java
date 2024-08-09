@@ -47,9 +47,13 @@ public enum ResultCode {
 
 	IMAGE_NOT_EXIST(500,"图片路径不存在"),
 
+	IMAGE_PATH_NOT_COMPLETE(500,"图片路径不完整"),
+
 	IMAGE_DELETE_SUCCESS(200,"图片删除成功"),
 
 	IMAGE_DELETE_FAIL(500,"图片删除失败"),
+
+	GOODS_INFO_NULL(500,"当前商品信息为空"),
 
 	SHOPTAB_INFO_NULL(500,"当前店铺信息为空"),
 

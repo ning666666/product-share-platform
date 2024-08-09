@@ -117,16 +117,22 @@ public class GoodsTabServiceImpl implements GoodsTabService {
     public void deleteFile(List<String> successUploadList) {
         if (!CollectionUtils.isEmpty(successUploadList)) {
             for (String filePath : successUploadList) {
-                File file = new File(filePath);
-                if (file.exists()) {
-                    boolean deleted = file.delete();
-                    if (deleted) {
-                        log.info("Deleted file: {}", filePath);
+                String[] parts = filePath.split("/");
+                if (parts.length > 2) {
+                    String filename = parts[2];
+                    File file = new File(fileSavePath + filename);
+                    if (file.exists()) {
+                        boolean deleted = file.delete();
+                        if (deleted) {
+                            log.info("Deleted file: {}", filePath);
+                        } else {
+                            log.error("Failed to delete file: {}, it may not exist or you may not have permission", filePath);
+                        }
                     } else {
-                        log.warn("Failed to delete file: {}, it may not exist or you may not have permission", filePath);
+                        log.error("File does not exist: {}", filePath);
                     }
                 } else {
-                    log.warn("File does not exist: {}", filePath);
+                    log.error("File path not complete: {}", filePath);
                 }
             }
         }
@@ -179,7 +185,9 @@ public class GoodsTabServiceImpl implements GoodsTabService {
                         // 保存文件
                         file.transferTo(dest);
                         // 获取保存后的文件路径
-                        String filePath = fileSavePath + newFileName;
+                        //String filePath = fileSavePath + newFileName;
+                        String filePath = "/image/" + newFileName;
+
                         log.info(String.format("image upload success address:{%s}", filePath));
                         // 保存成功上传的文件路径
                         successUploadList.add(filePath);
@@ -238,7 +246,8 @@ public class GoodsTabServiceImpl implements GoodsTabService {
                     // 保存文件
                     file.transferTo(dest);
                     // 获取保存后的文件路径
-                    String filePath = fileSavePath + newFileName;
+                    //String filePath = fileSavePath + newFileName;
+                    String filePath = "/image/" + newFileName;
 
                     log.info(String.format("image upload success address:{%s}", filePath));
                     return ResultVo.buildData(ResultCode.UPLOAD_SUCCESS, filePath);
@@ -282,7 +291,7 @@ public class GoodsTabServiceImpl implements GoodsTabService {
             if (goodsTab != null) {
                 // 删除商品主图
                 String mainImg = goodsTab.getMainImg();
-                if (mainImg != null) {
+                if (mainImg != null && mainImg != "") {
                     String[] imgs = mainImg.split(",");
                     for (String img : imgs) {
                         if (deleteImg(img))
@@ -291,7 +300,7 @@ public class GoodsTabServiceImpl implements GoodsTabService {
                 }
                 // 删除商品详细
                 String detailsImg = goodsTab.getDetailsImg();
-                if (detailsImg != null) {
+                if (detailsImg != null && detailsImg != "") {
                     String[] detailsImgs = detailsImg.split(",");
                     for (String img : detailsImgs) {
                         if (deleteImg(img))
@@ -300,7 +309,7 @@ public class GoodsTabServiceImpl implements GoodsTabService {
                 }
                 // 删除售后内容
                 String afterSales = goodsTab.getAfterSales();
-                if (afterSales != null) {
+                if (afterSales != null && afterSales != "") {
                     String[] afterSalesImg = afterSales.split(",");
                     for (String img : afterSalesImg) {
                         if (deleteImg(img))
@@ -308,14 +317,14 @@ public class GoodsTabServiceImpl implements GoodsTabService {
                     }
                 }
                 // 删除当前记录
-                int result = shopTabMapper.deleteByPrimaryKey(id);
+                int result = goodsTabMapper.deleteByPrimaryKey(id);
                 if (result == 1) {
                     return ResultVo.buildCode(ResultCode.DELETE_SUCCESS);
                 } else {
                     return ResultVo.buildCode(ResultCode.DELETE_FAIL);
                 }
             } else {
-                return ResultVo.buildCode(ResultCode.SHOPTAB_INFO_NULL);
+                return ResultVo.buildCode(ResultCode.GOODS_INFO_NULL);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -328,15 +337,19 @@ public class GoodsTabServiceImpl implements GoodsTabService {
         return fileUpload(file);
     }
 
-    private static boolean deleteImg(String img) {
+    public boolean deleteImg(String img) {
         // 删除图片
-        File file = new File(img.trim());
-        // 检查图片是否存在
-        if (file.exists()) {
-            // 尝试删除图片
-            boolean isDeleted = file.delete();
-            if (!isDeleted) {
-                return true;
+        String[] parts = img.split("/");
+        if (parts.length > 2) {
+            String filename = parts[2];
+            File file = new File(fileSavePath + filename);
+            // 检查图片是否存在
+            if (file.exists()) {
+                // 尝试删除图片
+                boolean isDeleted = file.delete();
+                if (!isDeleted) {
+                    return true;
+                }
             }
         }
         return false;

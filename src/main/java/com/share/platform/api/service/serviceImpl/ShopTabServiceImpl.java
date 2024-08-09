@@ -98,7 +98,8 @@ public class ShopTabServiceImpl implements ShopTabService {
                     // 保存文件
                     file.transferTo(dest);
                     // 获取保存后的文件路径
-                    String filePath = fileSavePath + newFileName;
+                    //String filePath = fileSavePath + newFileName;
+                    String filePath = "/image/" + newFileName;
 
                     log.info(String.format("image upload success address:{%s}", filePath));
                     return ResultVo.buildData(ResultCode.UPLOAD_SUCCESS, filePath);
@@ -129,17 +130,24 @@ public class ShopTabServiceImpl implements ShopTabService {
     public ResultVo deleteFileByPath(String filePath) {
         try {
             if (filePath != null) {
-                File file = new File(filePath);
-                if (file.exists()) {
-                    // 尝试删除图片
-                    boolean isDeleted = file.delete();
-                    if (isDeleted) {
-                        return ResultVo.buildCode(ResultCode.IMAGE_DELETE_SUCCESS);
+                String[] parts = filePath.split("/");
+                if (parts.length > 2) {
+                    // 第二个'/'之后的内容是parts数组的第三个元素（索引为2）
+                    String filename = parts[2];
+                    File file = new File(fileSavePath + filename);
+                    if (file.exists()) {
+                        // 尝试删除图片
+                        boolean isDeleted = file.delete();
+                        if (isDeleted) {
+                            return ResultVo.buildCode(ResultCode.IMAGE_DELETE_SUCCESS);
+                        } else {
+                            return ResultVo.buildCode(ResultCode.IMAGE_DELETE_FAIL);
+                        }
                     } else {
-                        return ResultVo.buildCode(ResultCode.IMAGE_DELETE_FAIL);
+                        return ResultVo.buildCode(ResultCode.IMAGE_NOT_EXIST);
                     }
                 } else {
-                    return ResultVo.buildCode(ResultCode.IMAGE_NOT_EXIST);
+                    return ResultVo.buildCode(ResultCode.IMAGE_PATH_NOT_COMPLETE);
                 }
             } else {
                 return ResultVo.buildCode(ResultCode.IMAGE_NOT_EXIST);
@@ -174,9 +182,10 @@ public class ShopTabServiceImpl implements ShopTabService {
         try {
             ShopTab shopTab = shopTabMapper.selectByPrimaryKey(id);
             if (shopTab != null) {
-                if (shopTab.getShopQualificate() != null) {
+                String shopQualificate = shopTab.getShopQualificate();
+                if (shopQualificate != null && shopQualificate != "") {
                     // 删除图片
-                    File file = new File(shopTab.getShopQualificate());
+                    File file = new File(fileSavePath + shopQualificate);
                     // 检查图片是否存在
                     if (file.exists()) {
                         // 尝试删除图片

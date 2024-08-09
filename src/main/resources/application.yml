@@ -36,10 +36,6 @@ spring:
       filter:
         enabled: true
 
-file:
-  upload:
-    path: D:/web/image/
-
 mybatis:
   mapper-locations: classpath:/mapper/*.xml
   configuration:

@@ -31,6 +31,14 @@
     <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
     <result column="goods_lab" jdbcType="VARCHAR" property="goodsLab" />
     <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="original_price" jdbcType="VARCHAR" property="originalPrice" />
+    <result column="discounted_price" jdbcType="VARCHAR" property="discountedPrice" />
+    <result column="opening_time" jdbcType="TIMESTAMP" property="openingTime" />
+    <result column="main_img" jdbcType="VARCHAR" property="mainImg" />
+    <result column="details_img" jdbcType="VARCHAR" property="detailsImg" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="qualifications" jdbcType="VARCHAR" property="qualifications" />
+    <result column="after_sales" jdbcType="VARCHAR" property="afterSales" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
