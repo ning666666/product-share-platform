@@ -1,0 +1,57 @@
+server:
+  tomcat:
+    connection-timeout: 60000
+    keep-alive-timeout: 90000
+
+wx:
+  app-id: appid
+  app-secret: app密钥
+  mch-id: 商户id（用作微信支付相关）
+  mch-key: 商户密钥
+  notify-url: 商户证书
+  # 商户证书文件路径
+  # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
+  key-path: xxxxx
+
+spring:
+  application:
+    name: psp-wx
+  profiles:
+    active: dev
+  datasource:
+    druid:
+      initial-size: 6
+      min-idle: 6
+      max-active: 12
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 50
+      filters: stat,slf4j,wall
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000
+      connection-init-sqls: set names 'utf8'
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+    hidden-method:
+      filter:
+        enabled: true
+
+pagehelper:
+  helperDialect: mysql
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
+
+mybatis:
+  configuration:
+    mapUnderscoreToCamelCase: true
