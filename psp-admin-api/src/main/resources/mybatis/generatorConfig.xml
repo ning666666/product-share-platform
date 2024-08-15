@@ -68,5 +68,17 @@
 	<table tableName="psp_category">
 	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
 	</table>
+
+	<table tableName="psp_ad">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_article">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_system">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
   </context>
 </generatorConfiguration>

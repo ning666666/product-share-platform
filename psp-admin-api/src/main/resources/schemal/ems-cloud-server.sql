@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS `psp_admin`;
 DROP TABLE IF EXISTS `psp_permission`;
 DROP TABLE IF EXISTS `psp_role`;
 DROP TABLE IF EXISTS `psp_user`;
+DROP TABLE IF EXISTS `psp_system`;
 
 
 # 商品表
@@ -141,3 +142,16 @@ CREATE TABLE `psp_user` (
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE INDEX `user_name`(`username`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表';
+
+# 系统配置表
+CREATE TABLE `psp_system`  (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `key_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统配置名',
+    `key_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统配置值',
+    `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+    `created_by` varchar(32) DEFAULT NULL COMMENT '创建人',
+    `update_by` varchar(32) DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统配置表' ROW_FORMAT = Compact;

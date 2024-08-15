@@ -16,6 +16,8 @@ public enum ResultCode {
 	 */
 	RUNTIME_ERROR(500,"系统错误"),
 
+	CACHE_CLEAR_SUCCESS(200,"缓存已清除"),
+
 	LOGIN_SUCCESS(200,"登录成功"),
 
 	LOGOUT_SUCCESS(200,"登出成功"),

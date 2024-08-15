@@ -6,6 +6,7 @@ import com.share.platform.api.dto.reponse.GoodsToShopInfoResponse;
 import com.share.platform.api.dto.request.AllGoodsTabRequest;
 import com.share.platform.api.dto.request.GoodsTabRequest;
 import com.share.platform.api.dto.request.UpdateGoodsTabRequest;
+import com.share.platform.api.model.GoodsTab;
 import com.share.platform.api.utils.ResultVo;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
