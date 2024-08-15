@@ -26,18 +26,18 @@
     </jdbcConnection>
 
 	  <javaModelGenerator targetPackage="com.share.platform.api.model"
-						  targetProject="D:/shangcheng/product-share-platform/src/main/java">
+						  targetProject="D:/shangcheng/product-share-platform/psp-admin-api/src/main/java">
 		  <property name="enableSubPackages" value="false" />
 		  <property name="trimStrings" value="true" />
 	  </javaModelGenerator>
 
 	  <sqlMapGenerator targetPackage="mapper"
-					   targetProject="D:/shangcheng/product-share-platform/src/main/resources">
+					   targetProject="D:/shangcheng/product-share-platform/psp-admin-api/src/main/resources">
 		  <property name="enableSubPackages" value="false" />
 	  </sqlMapGenerator>
 
 	  <javaClientGenerator targetPackage="com.share.platform.api.mapper"
-						   targetProject="D:/shangcheng/product-share-platform/src/main/java" type="XMLMAPPER">
+						   targetProject="D:/shangcheng/product-share-platform/psp-admin-api/src/main/java" type="XMLMAPPER">
 		  <property name="enableSubPackages" value="false" />
 	  </javaClientGenerator>
 
@@ -62,6 +62,10 @@
 	</table>
 
 	<table tableName="psp_user">
+	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
+	</table>
+
+	<table tableName="psp_category">
 	  <generatedKey column="id" sqlStatement="mysql" identity="true"/>
 	</table>
   </context>

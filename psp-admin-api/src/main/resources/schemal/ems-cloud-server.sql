@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS `goods_tab`;
 DROP TABLE IF EXISTS `shop_tab`;
+DROP TABLE IF EXISTS `psp_category`;
 DROP TABLE IF EXISTS `psp_admin`;
 DROP TABLE IF EXISTS `psp_permission`;
 DROP TABLE IF EXISTS `psp_role`;
@@ -47,6 +48,26 @@ CREATE TABLE `shop_tab` (
     `update_by` varchar(32) DEFAULT NULL COMMENT '修改人',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='店铺信息';
+
+# 商品类目表
+CREATE TABLE `psp_category`  (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类目名称',
+    `keywords` varchar(1023) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '类目关键字，以JSON数组格式',
+    `describe` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目广告语介绍',
+    `pid` int(11) NOT NULL DEFAULT 0 COMMENT '父类目ID',
+    `icon_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目图标',
+    `pic_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '类目图片',
+    `level` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'L1',
+    `sort_order` tinyint(3) NULL DEFAULT 50 COMMENT '排序',
+    `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '逻辑删除',
+    `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+    `created_by` varchar(32) DEFAULT NULL COMMENT '创建人',
+    `update_by` varchar(32) DEFAULT NULL COMMENT '修改人',
+    PRIMARY KEY (`id`) USING BTREE,
+    INDEX `parent_id`(`pid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '类目表' ROW_FORMAT = Compact;
 
 # 管理员表
 CREATE TABLE `psp_admin` (
