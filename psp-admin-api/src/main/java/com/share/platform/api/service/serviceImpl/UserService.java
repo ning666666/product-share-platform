@@ -18,12 +18,6 @@ public class UserService {
 	@Resource
 	private PspUserMapper userMapper;
 
-	//@Resource
-	//private PspUserAccountMapper userAccountMapper;
-
-	//@Resource
-	//private StatMapper statMapper;
-
 	public PspUser findById(Integer userId) {
 		return userMapper.selectByPrimaryKey(userId);
 	}
@@ -109,43 +103,6 @@ public class UserService {
 		userMapper.logicalDeleteByPrimaryKey(id);
 	}
 
-	/**
-	 * 审批代理申请
-	 * @param
-	 */
-	/*
-	public void approveAgency(Integer userId,Integer settlementRate,String shareUrl) {
-		//获取账户数据
-		PspUserAccountExample example = new PspUserAccountExample();
-		example.or().andUserIdEqualTo(userId);
-
-		PspUserAccount dbAccount = userAccountMapper.selectOneByExample(example);
-		if (dbAccount == null) {
-			throw new RuntimeException("申请账户不存在");
-		}
-		dbAccount.setShareUrl(shareUrl);
-		if (!StringUtils.isEmpty(settlementRate)) {
-			dbAccount.setSettlementRate(settlementRate);
-		}
-		dbAccount.setModifyTime(LocalDateTime.now());
-		userAccountMapper.updateByPrimaryKey(dbAccount);
-
-		//更新会员状态和类型
-		PspUser user = findById(userId);
-		user.setUserLevel((byte) 2);//区域代理用户
-		user.setStatus((byte) 0);//正常状态
-		updateById(user);
-
-	}
-
-	public PspUserAccount detailApproveByUserId(Integer userId) {
-		// 获取账户数据
-		PspUserAccountExample example = new PspUserAccountExample();
-		example.or().andUserIdEqualTo(userId);
-
-		PspUserAccount dbAccount = userAccountMapper.selectOneByExample(example);
-		return dbAccount;
-	}*/
 
 	public List<PspUser> queryPspUserListByNickname(String username,String mobile) {
 		PspUserExample example = new PspUserExample();
@@ -160,7 +117,4 @@ public class UserService {
 		return userMapper.selectByExample(example);
 	}
 
-/*	public List<DayStatis> recentCount(int statisDaysRang) {
-		return statMapper.statisIncreaseUserCnt(statisDaysRang);
-	}*/
 }

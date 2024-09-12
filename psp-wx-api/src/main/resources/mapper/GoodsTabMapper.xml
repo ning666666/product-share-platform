@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.share.platform.wx.mapper.GoodsTabMapper">
+  <resultMap id="BaseResultMap" type="com.share.platform.wx.model.GoodsTab">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="shop_code" jdbcType="VARCHAR" property="shopCode" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
+    <result column="original_price" jdbcType="VARCHAR" property="originalPrice" />
+    <result column="discounted_price" jdbcType="VARCHAR" property="discountedPrice" />
+    <result column="opening_time" jdbcType="TIMESTAMP" property="openingTime" />
+    <result column="goods_lab" jdbcType="VARCHAR" property="goodsLab" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="main_img" jdbcType="VARCHAR" property="mainImg" />
+    <result column="details_img" jdbcType="VARCHAR" property="detailsImg" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="qualifications" jdbcType="VARCHAR" property="qualifications" />
+    <result column="after_sales" jdbcType="VARCHAR" property="afterSales" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+  </resultMap>
+
+  <resultMap id="WxGoodsInfo" type="com.share.platform.wx.dto.reponse.WxGoodsResponse">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
+    <result column="original_price" jdbcType="VARCHAR" property="originalPrice" />
+    <result column="discounted_price" jdbcType="VARCHAR" property="discountedPrice" />
+    <result column="opening_time" jdbcType="TIMESTAMP" property="openingTime" />
+    <result column="goods_lab" jdbcType="VARCHAR" property="goodsLab" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="main_img" jdbcType="VARCHAR" property="mainImg" />
+    <result column="details_img" jdbcType="VARCHAR" property="detailsImg" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="qualifications" jdbcType="VARCHAR" property="qualifications" />
+    <result column="after_sales" jdbcType="VARCHAR" property="afterSales" />
+  </resultMap>
+
+  <resultMap id="AllGoodsResultMap" type="com.share.platform.wx.dto.reponse.AllGoodsTabResponse">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+    <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
+    <result column="goods_lab" jdbcType="VARCHAR" property="goodsLab" />
+    <result column="goods_type" jdbcType="VARCHAR" property="goodsType" />
+    <result column="original_price" jdbcType="VARCHAR" property="originalPrice" />
+    <result column="discounted_price" jdbcType="VARCHAR" property="discountedPrice" />
+    <result column="opening_time" jdbcType="TIMESTAMP" property="openingTime" />
+    <result column="main_img" jdbcType="VARCHAR" property="mainImg" />
+    <result column="details_img" jdbcType="VARCHAR" property="detailsImg" />
+    <result column="video" jdbcType="VARCHAR" property="video" />
+    <result column="qualifications" jdbcType="VARCHAR" property="qualifications" />
+    <result column="after_sales" jdbcType="VARCHAR" property="afterSales" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, parent_id, goods_code, shop_code, shop_name, goods_title, original_price, discounted_price, 
+    opening_time, goods_lab, goods_type, main_img, details_img, video, qualifications, 
+    after_sales, create_time, update_time, created_by, update_by
+  </sql>
+  <select id="selectByExample" parameterType="com.share.platform.wx.model.GoodsTabExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods_tab
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods_tab
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods_tab
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.share.platform.wx.model.GoodsTabExample">
+    delete from goods_tab
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.share.platform.wx.model.GoodsTab">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into goods_tab (parent_id, goods_code, shop_code, 
+      shop_name, goods_title, original_price, 
+      discounted_price, opening_time, goods_lab, 
+      goods_type, main_img, details_img, 
+      video, qualifications, after_sales, 
+      create_time, update_time, created_by, 
+      update_by)
+    values (#{parentId,jdbcType=INTEGER}, #{goodsCode,jdbcType=VARCHAR}, #{shopCode,jdbcType=VARCHAR}, 
+      #{shopName,jdbcType=VARCHAR}, #{goodsTitle,jdbcType=VARCHAR}, #{originalPrice,jdbcType=VARCHAR}, 
+      #{discountedPrice,jdbcType=VARCHAR}, #{openingTime,jdbcType=TIMESTAMP}, #{goodsLab,jdbcType=VARCHAR}, 
+      #{goodsType,jdbcType=VARCHAR}, #{mainImg,jdbcType=VARCHAR}, #{detailsImg,jdbcType=VARCHAR}, 
+      #{video,jdbcType=VARCHAR}, #{qualifications,jdbcType=VARCHAR}, #{afterSales,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{updateBy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.share.platform.wx.model.GoodsTab">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into goods_tab
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="goodsCode != null">
+        goods_code,
+      </if>
+      <if test="shopCode != null">
+        shop_code,
+      </if>
+      <if test="shopName != null">
+        shop_name,
+      </if>
+      <if test="goodsTitle != null">
+        goods_title,
+      </if>
+      <if test="originalPrice != null">
+        original_price,
+      </if>
+      <if test="discountedPrice != null">
+        discounted_price,
+      </if>
+      <if test="openingTime != null">
+        opening_time,
+      </if>
+      <if test="goodsLab != null">
+        goods_lab,
+      </if>
+      <if test="goodsType != null">
+        goods_type,
+      </if>
+      <if test="mainImg != null">
+        main_img,
+      </if>
+      <if test="detailsImg != null">
+        details_img,
+      </if>
+      <if test="video != null">
+        video,
+      </if>
+      <if test="qualifications != null">
+        qualifications,
+      </if>
+      <if test="afterSales != null">
+        after_sales,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createdBy != null">
+        created_by,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCode != null">
+        #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shopCode != null">
+        #{shopCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null">
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsTitle != null">
+        #{goodsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null">
+        #{originalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="discountedPrice != null">
+        #{discountedPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="openingTime != null">
+        #{openingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsLab != null">
+        #{goodsLab,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null">
+        #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImg != null">
+        #{mainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="detailsImg != null">
+        #{detailsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null">
+        #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="qualifications != null">
+        #{qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="afterSales != null">
+        #{afterSales,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.share.platform.wx.model.GoodsTabExample" resultType="java.lang.Long">
+    select count(*) from goods_tab
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update goods_tab
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=INTEGER},
+      </if>
+      <if test="row.parentId != null">
+        parent_id = #{row.parentId,jdbcType=INTEGER},
+      </if>
+      <if test="row.goodsCode != null">
+        goods_code = #{row.goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="row.shopCode != null">
+        shop_code = #{row.shopCode,jdbcType=VARCHAR},
+      </if>
+      <if test="row.shopName != null">
+        shop_name = #{row.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="row.goodsTitle != null">
+        goods_title = #{row.goodsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="row.originalPrice != null">
+        original_price = #{row.originalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="row.discountedPrice != null">
+        discounted_price = #{row.discountedPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="row.openingTime != null">
+        opening_time = #{row.openingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.goodsLab != null">
+        goods_lab = #{row.goodsLab,jdbcType=VARCHAR},
+      </if>
+      <if test="row.goodsType != null">
+        goods_type = #{row.goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="row.mainImg != null">
+        main_img = #{row.mainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="row.detailsImg != null">
+        details_img = #{row.detailsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="row.video != null">
+        video = #{row.video,jdbcType=VARCHAR},
+      </if>
+      <if test="row.qualifications != null">
+        qualifications = #{row.qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="row.afterSales != null">
+        after_sales = #{row.afterSales,jdbcType=VARCHAR},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.updateTime != null">
+        update_time = #{row.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="row.createdBy != null">
+        created_by = #{row.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="row.updateBy != null">
+        update_by = #{row.updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update goods_tab
+    set id = #{row.id,jdbcType=INTEGER},
+      parent_id = #{row.parentId,jdbcType=INTEGER},
+      goods_code = #{row.goodsCode,jdbcType=VARCHAR},
+      shop_code = #{row.shopCode,jdbcType=VARCHAR},
+      shop_name = #{row.shopName,jdbcType=VARCHAR},
+      goods_title = #{row.goodsTitle,jdbcType=VARCHAR},
+      original_price = #{row.originalPrice,jdbcType=VARCHAR},
+      discounted_price = #{row.discountedPrice,jdbcType=VARCHAR},
+      opening_time = #{row.openingTime,jdbcType=TIMESTAMP},
+      goods_lab = #{row.goodsLab,jdbcType=VARCHAR},
+      goods_type = #{row.goodsType,jdbcType=VARCHAR},
+      main_img = #{row.mainImg,jdbcType=VARCHAR},
+      details_img = #{row.detailsImg,jdbcType=VARCHAR},
+      video = #{row.video,jdbcType=VARCHAR},
+      qualifications = #{row.qualifications,jdbcType=VARCHAR},
+      after_sales = #{row.afterSales,jdbcType=VARCHAR},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      update_time = #{row.updateTime,jdbcType=TIMESTAMP},
+      created_by = #{row.createdBy,jdbcType=VARCHAR},
+      update_by = #{row.updateBy,jdbcType=VARCHAR}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.share.platform.wx.model.GoodsTab">
+    update goods_tab
+    <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shopCode != null">
+        shop_code = #{shopCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null">
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsTitle != null">
+        goods_title = #{goodsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null">
+        original_price = #{originalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="discountedPrice != null">
+        discounted_price = #{discountedPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="openingTime != null">
+        opening_time = #{openingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goodsLab != null">
+        goods_lab = #{goodsLab,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsType != null">
+        goods_type = #{goodsType,jdbcType=VARCHAR},
+      </if>
+      <if test="mainImg != null">
+        main_img = #{mainImg,jdbcType=VARCHAR},
+      </if>
+      <if test="detailsImg != null">
+        details_img = #{detailsImg,jdbcType=VARCHAR},
+      </if>
+      <if test="video != null">
+        video = #{video,jdbcType=VARCHAR},
+      </if>
+      <if test="qualifications != null">
+        qualifications = #{qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="afterSales != null">
+        after_sales = #{afterSales,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.share.platform.wx.model.GoodsTab">
+    update goods_tab
+    set parent_id = #{parentId,jdbcType=INTEGER},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      shop_code = #{shopCode,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      goods_title = #{goodsTitle,jdbcType=VARCHAR},
+      original_price = #{originalPrice,jdbcType=VARCHAR},
+      discounted_price = #{discountedPrice,jdbcType=VARCHAR},
+      opening_time = #{openingTime,jdbcType=TIMESTAMP},
+      goods_lab = #{goodsLab,jdbcType=VARCHAR},
+      goods_type = #{goodsType,jdbcType=VARCHAR},
+      main_img = #{mainImg,jdbcType=VARCHAR},
+      details_img = #{detailsImg,jdbcType=VARCHAR},
+      video = #{video,jdbcType=VARCHAR},
+      qualifications = #{qualifications,jdbcType=VARCHAR},
+      after_sales = #{afterSales,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.share.platform.wx.model.GoodsTabExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods_tab
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="getAllGoodsTabInfo" parameterType="com.share.platform.wx.dto.request.AllGoodsTabRequest" resultMap="AllGoodsResultMap">
+    SELECT *
+    FROM goods_tab
+    <where>
+      <if test="requestDTO.goodsName != null and requestDTO.goodsName != ''">
+        AND goods_title LIKE CONCAT('%', #{requestDTO.goodsName}, '%')
+      </if>
+      <if test="requestDTO.shopName != null and requestDTO.shopName != ''">
+        AND shop_name LIKE CONCAT('%', #{requestDTO.shopName}, '%')
+      </if>
+    </where>
+  </select>
+  <select id="queryByCondition" resultType="com.share.platform.wx.dto.reponse.WxGoodsResponse" resultMap="WxGoodsInfo">
+    SELECT *
+    FROM goods_tab
+    ORDER BY create_time DESC
+  </select>
+  <select id="queryWxCategoryByCondition" resultType="com.share.platform.wx.dto.reponse.WxGoodsResponse" resultMap="WxGoodsInfo">
+    SELECT *
+    FROM goods_tab
+    WHERE goods_type = #{catlogId}
+    ORDER BY create_time DESC
+  </select>
+</mapper>

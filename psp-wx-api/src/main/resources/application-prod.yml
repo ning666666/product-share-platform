@@ -7,6 +7,3 @@ spring:
     url: jdbc:mysql://101.37.31.187:3306/ems-cloud?autoReconnect=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
     username: jason
     password: "@Js123456789"
-file:
-  upload:
-    path: /home/product-share-platform/file_upload/

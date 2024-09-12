@@ -3,9 +3,7 @@ package com.share.platform.api.service.serviceImpl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.share.platform.api.constant.ResultCode;
-import com.share.platform.api.dto.reponse.AllGoodsTabPageResponse;
-import com.share.platform.api.dto.reponse.AllGoodsTabResponse;
-import com.share.platform.api.dto.reponse.GoodsToShopInfoResponse;
+import com.share.platform.api.dto.reponse.*;
 import com.share.platform.api.dto.request.AllGoodsTabRequest;
 import com.share.platform.api.dto.request.GoodsTabRequest;
 import com.share.platform.api.dto.request.UpdateGoodsTabRequest;
@@ -19,16 +17,19 @@ import com.share.platform.api.service.GoodsTabService;
 import com.share.platform.api.utils.AuthSupport;
 import com.share.platform.api.utils.ResultVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Repository
 @Slf4j
@@ -336,6 +337,7 @@ public class GoodsTabServiceImpl implements GoodsTabService {
     public ResultVo goodsqualiImageUpload(MultipartFile file) {
         return fileUpload(file);
     }
+
 
     public boolean deleteImg(String img) {
         // 删除图片

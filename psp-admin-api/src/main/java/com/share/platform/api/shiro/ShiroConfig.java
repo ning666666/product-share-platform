@@ -71,7 +71,6 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/v2/api-docs/**", "anon");
 		filterChainDefinitionMap.put("/platform-swagger-ui.html", "anon");
 		filterChainDefinitionMap.put("/platFormApi/**", "anon");
-		filterChainDefinitionMap.put("/wx/auth/**", "anon");
 
 		// 匿名用户可访问
 		filterChainDefinitionMap.put("/anon/**", "anon");

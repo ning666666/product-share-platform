@@ -3,16 +3,6 @@ server:
     connection-timeout: 60000
     keep-alive-timeout: 90000
 
-wx:
-  app-id: appid
-  app-secret: app密钥
-  mch-id: 商户id（用作微信支付相关）
-  mch-key: 商户密钥
-  notify-url: 商户证书
-  # 商户证书文件路径
-  # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
-  key-path: xxxxx
-
 spring:
   application:
     name: psp-wx
@@ -39,6 +29,7 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+    context-path: /
   mvc:
     path match:
       matching-strategy: ant_path_matcher
@@ -46,12 +37,27 @@ spring:
       filter:
         enabled: true
 
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    auto-commit: false
+
+logging:
+  config:
+    classpath: logback.xml
+
 pagehelper:
   helperDialect: mysql
   params: count=countSql
   reasonable: true
   supportMethodsArguments: true
 
-mybatis:
-  configuration:
-    mapUnderscoreToCamelCase: true
+wx:
+  app-id: wxa3e23d8b97090337
+  app-secret: bdd6a07d332a49ced8472027bf73cf36
+  mch-id: 1538666666
+  mch-key: 1538xxxxxx-1538xxxxxx-1538xxxxxx
+  notify-url: https://test.dtsshop.com/demo/order/dtsNotify
+  # 商户证书文件路径
+  # 请参考“商户证书”一节 https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=4_3
+  key-path: xxxxx
